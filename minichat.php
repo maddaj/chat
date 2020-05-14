@@ -1,4 +1,5 @@
 <?php
+session_start();
 
 include("pdo.php");
 
@@ -36,11 +37,26 @@ $allLine = $request->fetchAll();
                 ?>
             </div>
             <div class="col-12 col-md-4">
-                <form action="minichat_post.php" method="post">
-                    <input type="text" name="userName" id="pseudo" placeholder="Pseudo" /><br />
-                    <input class="chat-window-message" name="messages" type="text" autocomplete="off" autofocus placeholder="Aa" />
-                    <button type="submit" value="Envoyer" class="button">Submit</button>
-                </form>
+                <?php
+                // If the user is logged in
+                if (isset($_SESSION['userId'])) {
+                ?>
+                    <form action="minichat_post.php" method="post">
+                        <button type="submit" formaction="minichat_logout.php">Déconnexion</button>
+                        <input class="chat-window-message" name="messages" type="text" autocomplete="off" autofocus placeholder="Aa" />
+                        <button type="submit" value="Envoyer" class="button">Envoyer</button>
+                    </form>
+                <?php
+                } else {
+                ?>
+                    <form action="minichat_login.php" method="post">
+                        <input type="text" name="userName" id="pseudo" placeholder="Pseudo" /><br />
+                        <input class="chat-window-message" name="mdp" type="password" autocomplete="off" autofocus placeholder="Password" />
+                        <button type="submit" value="Envoyer" class="button">Connexion</button>
+                    </form>
+                <?php
+                }
+                ?>
             </div>
         </div>
     </div>
